@@ -82,11 +82,13 @@ input[type="text"] {
 
 #wordList,
 #solutions {
+  font-family: "Futura Hv BT", "Atkinson Hyperlegible", "Verdana", "Helvetica", "Arial", sans-serif;
+  letter-spacing: 0.2em;
   margin-top: 20px;
   font-size: 20px;
   color: #555;
   column-count: 1;
-  line-height: 1.5;
+  line-height: 2;
 }
 
 /* Responsive adjustments */
