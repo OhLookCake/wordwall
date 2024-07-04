@@ -42,7 +42,7 @@ input[type="text"] {
   font-size: 16px;
   border-radius: 8px;
   border: 2px solid #ccc;
-  width: calc(100% - 24px); /* Full width minus padding and border */
+  width: 60%;
 }
 
 .found {
@@ -59,21 +59,34 @@ input[type="text"] {
   font-size: 24px;
   font-weight: bold;
   color: #333;
-  margin-top: 20px;
+  margin: 10px;
 }
 
 #score {
   font-size: 20px;
   color: #333;
-  margin-top: 10px;
+  margin: 10px;
 }
 
-#lastWord,
-#wordList {
+#lastWord {
   margin-top: 20px;
   font-size: 20px;
   color: #555;
-  word-wrap: break-word;
+}
+
+#results {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #555;
+}
+
+#wordList,
+#solutions {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #555;
+  column-count: 1;
+  line-height: 1.5;
 }
 
 /* Responsive adjustments */
@@ -106,6 +119,7 @@ input[type="text"] {
   #timer,
   #score,
   #lastWord,
+  #results,
   #wordList {
     font-size: 16px;
   }

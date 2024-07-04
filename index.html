@@ -12,21 +12,29 @@
       <button onclick="startGame()">Start Game</button>
     </div>
     <div id="gameArea">
-      <div id="wordList"></div>
+      <div id="timer">--:--</div>
+      <div id="score">Score:</div>
+
       <input type="text" id="inputText" oninput="this.value = this.value.toUpperCase()" />
-      <button onclick="hideWord()">Submit</button>
-      <div id="lastWord"></div>
-      <div id="timer">02:00</div>
-      <div id="score"></div>
+      <div id="lastWord">&nbsp;</div>
+
+      <div id="wordList"></div>
+
+      <div id="results"></div>
+      <div id="solutions"></div>
     </div>
 
     <script src="words.js"></script>
     <script>
+      // Params
+      const numWordsToShow = 10;
+      const startingSeconds = 15;
+
       var today = new Date();
       var seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
       var words, jumbledWords;
       var timerInterval;
-      var totalSeconds = 120;
+      var totalSeconds = startingSeconds;
       var score = 0;
 
       function seededRandom(max, min = 0) {
@@ -44,12 +52,12 @@
 
       function startGame() {
         if (typeof wordList === "undefined" || wordList.length === 0) {
-          alert("Word list is loading, please try again in a few seconds.");
+          alert("Word list is loading, please try again in a few seconds. Or there's a problem and this is broken :(");
           return;
         }
         words = wordList.slice();
         shuffle(words);
-        words = words.slice(0, 5);
+        words = words.slice(0, numWordsToShow);
         jumbledWords = words.map((word) => {
           var shuffled = word.split("");
           shuffle(shuffled);
@@ -58,6 +66,9 @@
         document.getElementById("introScreen").style.display = "none";
         document.getElementById("gameArea").style.display = "block";
         document.getElementById("wordList").innerText = jumbledWords.join("\n");
+        document.getElementById("inputText").focus();
+        document.getElementById("score").innerText = `Score: ${score}/${numWordsToShow}`;
+
         startTimer();
       }
 
@@ -70,6 +81,7 @@
           document.getElementById("wordList").innerText = jumbledWords.join("\n");
           document.getElementById("lastWord").innerHTML = `<span class="found">${userInput}</span>`;
           score++;
+          document.getElementById("score").innerHTML = `Score: ${score}/${numWordsToShow}`;
           if (words.length === 0) {
             endGame();
           }
@@ -98,9 +110,9 @@
       function endGame() {
         clearInterval(timerInterval);
         document.getElementById("inputText").disabled = true;
-        document.getElementById("lastWord").innerHTML += `<p>Congratulations! Your score: ${score}</p>`;
+        document.getElementById("results").innerHTML += `<p>Score: ${score}</p>`;
         if (words.length > 0) {
-          document.getElementById("lastWord").innerHTML += `<p>Unsolved Words: ${words.join("\n")}</p>`;
+          document.getElementById("wordList").innerHTML = `${words.join("<br />")}`;
         }
       }
 
