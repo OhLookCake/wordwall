@@ -1,0 +1,62 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+#introScreen {
+  margin-top: 50px;
+}
+#gameArea {
+  display: none;
+  margin-top: 20px;
+}
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+}
+.found {
+  color: green;
+  font-weight: bold;
+}
+.not-found {
+  color: red;
+  font-weight: bold;
+}
+#timer {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
+#score {
+  font-size: 20px;
+  color: #333;
+  margin-top: 10px;
+}
+#lastWord {
+  margin-top: 20px;
+  font-size: 18px;
+}
+#wordList {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #555;
+}
