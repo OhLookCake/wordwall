@@ -1,111 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Jumbler</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <style>
+      .found {
+        color: green;
+      }
+      .not-found {
+        color: red;
+      }
+      #gameArea {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
     <div id="introScreen">
-        <h1>Welcome to Word Jumbler</h1>
-        <button onclick="startGame()">Start Game</button>
+      <h1>Hello</h1>
+      <button onclick="startGame()">Start</button>
     </div>
     <div id="gameArea">
-        <div id="wordList"></div>
-        <input type="text" id="inputText" placeholder="Enter the original word to hide">
-        <button onclick="hideWord()">Submit</button>
-        <div id="lastWord"></div>
-        <div id="timer">02:00</div>
-        <div id="score"></div>
+      <div id="wordList"></div>
+      <input type="text" id="inputText" placeholder="Enter the original word to hide" />
+      <button onclick="hideWord()">Hide Word</button>
+      <div id="lastWord"></div>
+      <div id="timer">02:00</div>
+      <div id="score"></div>
     </div>
 
     <script>
-        var fullWordList = ['apple', 'banana', 'cherry', 'date', 'elderberry', 'fig', 'grape', 'honeydew', 'kiwi', 'lemon'];
-        var today = new Date();
-        var seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-        var words, jumbledWords;
-        var timerInterval;
-        var totalSeconds = 120;
-        var score = 0;
+      var fullWordList = [
+        "apple",
+        "banana",
+        "cherry",
+        "date",
+        "elderberry",
+        "fig",
+        "grape",
+        "honeydew",
+        "kiwi",
+        "lemon",
+      ];
+      var today = new Date();
+      var seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate(); // YYYYMMDD
+      var words, jumbledWords;
+      var timerInterval;
+      var totalSeconds = 120; // 2 minutes in seconds
+      var score = 0; // Initialize score
 
-        function seededRandom(max, min = 0) {
-            seed = (seed * 9301 + 49297) % 233280;
-            const rnd = seed / 233280;
-            return Math.floor(min + rnd * (max - min));
+      function seededRandom(max, min = 0) {
+        seed = (seed * 9301 + 49297) % 233280;
+        const rnd = seed / 233280;
+        return Math.floor(min + rnd * (max - min));
+      }
+
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = seededRandom(i + 1);
+          [array[i], array[j]] = [array[j], array[i]];
         }
+      }
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = seededRandom(i + 1);
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        function startGame() {
-            words = fullWordList.slice();
-            shuffle(words);
-            words = words.slice(0, 5);
-            jumbledWords = words.map(word => {
-                var shuffled = word.split('');
-                shuffle(shuffled);
-                return shuffled.join('');
-            });
-            document.getElementById('introScreen').style.display = 'none';
-            document.getElementById('gameArea').style.display = 'block';
-            document.getElementById('wordList').innerText = jumbledWords.join(', ');
-            startTimer();
-        }
-
-        function hideWord() {
-            var userInput = document.getElementById('inputText').value;
-            var index = words.indexOf(userInput);
-            if (index !== -1) {
-                words.splice(index, 1);
-                jumbledWords.splice(index, 1);
-                document.getElementById('wordList').innerText = jumbledWords.join(', ');
-                document.getElementById('lastWord').innerHTML = `<span class="found">${userInput}</span>`;
-                score++;
-                if (words.length === 0) {
-                    endGame();
-                }
-            } else {
-                document.getElementById('lastWord').innerHTML = `<span class="not-found">${userInput}</span>`;
-            }
-            document.getElementById('inputText').value = '';
-        }
-
-        function startTimer() {
-            timerInterval = setInterval(function() {
-                totalSeconds--;
-                var minutes = Math.floor(totalSeconds / 60);
-                var remainingSeconds = totalSeconds % 60;
-                document.getElementById('timer').innerText = `${pad(minutes)}:${pad(remainingSeconds)}`;
-                if (totalSeconds <= 0) {
-                    endGame();
-                }
-            }, 1000);
-        }
-
-        function pad(value) {
-            return value.toString().padStart(2, '0');
-        }
-
-        function endGame() {
-            clearInterval(timerInterval);
-            document.getElementById('inputText').disabled = true;
-            document.getElementById('lastWord').innerHTML += `<p>Congratulations! Your score: ${score}</p>`;
-            if (words.length > 0) {
-                document.getElementById('lastWord').innerHTML += `<p>Unsolved Words: ${words.join(', ')}</p>`;
-            }
-        }
-
-        document.getElementById('inputText').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                hideWord();
-            }
+      function startGame() {
+        words = fullWordList.slice();
+        shuffle(words);
+        words = words.slice(0, 5); // Select the first 5 shuffled words
+        jumbledWords = words.map((word) => {
+          var shuffled = word.split("");
+          shuffle(shuffled);
+          return shuffled.join("");
         });
+        document.getElementById("introScreen").style.display = "none";
+        document.getElementById("gameArea").style.display = "block";
+        document.getElementById("wordList").innerText = jumbledWords.join(", ");
+        startTimer();
+      }
+
+      function hideWord() {
+        var userInput = document.getElementById("inputText").value;
+        var index = words.indexOf(userInput);
+        if (index !== -1) {
+          words.splice(index, 1);
+          jumbledWords.splice(index, 1);
+          document.getElementById("wordList").innerText = jumbledWords.join(", ");
+          document.getElementById("lastWord").innerHTML = `<span class="found">${userInput}</span>`;
+          score++; // Increment score
+          if (words.length === 0) {
+            endGame();
+          }
+        } else {
+          document.getElementById("lastWord").innerHTML = `<span class="not-found">${userInput}</span>`;
+        }
+        document.getElementById("inputText").value = "";
+      }
+
+      function startTimer() {
+        timerInterval = setInterval(function () {
+          totalSeconds--;
+          var minutes = Math.floor(totalSeconds / 60);
+          var remainingSeconds = totalSeconds % 60;
+          document.getElementById("timer").innerText = `${pad(minutes)}:${pad(remainingSeconds)}`;
+          if (totalSeconds <= 0) {
+            endGame();
+          }
+        }, 1000);
+      }
+
+      function pad(value) {
+        return value.toString().padStart(2, "0");
+      }
+
+      function endGame() {
+        clearInterval(timerInterval);
+        document.getElementById("inputText").disabled = true;
+        document.getElementById("lastWord").innerHTML += `<p>Congratulations! Your score: ${score}</p>`;
+        if (words.length > 0) {
+          document.getElementById("lastWord").innerHTML += `<p>Unsolved Words: ${words.join(", ")}</p>`;
+        }
+      }
+
+      document.getElementById("inputText").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          hideWord();
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
