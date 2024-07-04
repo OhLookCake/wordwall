@@ -4,15 +4,25 @@ body {
   color: #333;
   text-align: center;
   padding: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  min-height: 100vh;
 }
 
 #introScreen {
-  margin-top: 50px;
+  margin-top: 20px;
 }
+
 #gameArea {
   display: none;
   margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
 }
+
 button {
   background-color: #4caf50;
   color: white;
@@ -26,37 +36,77 @@ button {
   cursor: pointer;
   border-radius: 8px;
 }
+
 input[type="text"] {
   padding: 10px;
   font-size: 16px;
   border-radius: 8px;
   border: 2px solid #ccc;
+  width: calc(100% - 24px); /* Full width minus padding and border */
 }
+
 .found {
   color: green;
   font-weight: bold;
 }
+
 .not-found {
   color: red;
   font-weight: bold;
 }
+
 #timer {
   font-size: 24px;
   font-weight: bold;
   color: #333;
   margin-top: 20px;
 }
+
 #score {
   font-size: 20px;
   color: #333;
   margin-top: 10px;
 }
-#lastWord {
-  margin-top: 20px;
-  font-size: 18px;
-}
+
+#lastWord,
 #wordList {
   margin-top: 20px;
   font-size: 20px;
   color: #555;
+  word-wrap: break-word;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  button,
+  input[type="text"] {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  #timer,
+  #score,
+  #lastWord,
+  #wordList {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 400px) {
+  body {
+    padding: 10px;
+  }
+
+  button,
+  input[type="text"] {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  #timer,
+  #score,
+  #lastWord,
+  #wordList {
+    font-size: 16px;
+  }
 }
