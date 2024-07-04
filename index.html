@@ -3,12 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Word Jumbler</title>
+    <title>Word Wall</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div id="introScreen">
-      <h1>Welcome to Word Jumbler</h1>
+      <h1>Word Wall</h1>
+      <h3>How to play</h3>
+      <p>
+        Once you hit start, you'll have 60 seconds to solve up to ten 9-letter conundrums <br />
+        Simply type in your guess and press Enter or Space <br />
+        You can solve the conundrums in any order you want <br />
+        Incorrect guesses don't count against your score
+      </p>
       <button onclick="startGame()">Start Game</button>
     </div>
     <div id="gameArea">
@@ -40,12 +47,16 @@
       function seededRandom(max, min = 0) {
         seed = (seed * 9301 + 49297) % 233280;
         const rnd = seed / 233280;
-        return Math.floor(min + rnd * (max - min));
+        return Math.floor(min + rnd * (max - min + 1));
+      }
+
+      function unseededRandom(max, min = 0) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
       function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
-          const j = seededRandom(i + 1);
+          const j = unseededRandom(i);
           [array[i], array[j]] = [array[j], array[i]];
         }
       }
