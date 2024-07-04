@@ -4,51 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Jumbler</title>
-    <style>
-      .found {
-        color: green;
-      }
-      .not-found {
-        color: red;
-      }
-      #gameArea {
-        display: none;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div id="introScreen">
-      <h1>Hello</h1>
-      <button onclick="startGame()">Start</button>
+      <h1>Welcome to Word Jumbler</h1>
+      <button onclick="startGame()">Start Game</button>
     </div>
     <div id="gameArea">
       <div id="wordList"></div>
       <input type="text" id="inputText" placeholder="Enter the original word to hide" />
-      <button onclick="hideWord()">Hide Word</button>
+      <button onclick="hideWord()">Submit</button>
       <div id="lastWord"></div>
       <div id="timer">02:00</div>
       <div id="score"></div>
     </div>
 
     <script>
-      var fullWordList = [
-        "apple",
-        "banana",
-        "cherry",
-        "date",
-        "elderberry",
-        "fig",
-        "grape",
-        "honeydew",
-        "kiwi",
-        "lemon",
-      ];
+      var fullWordList = [];
       var today = new Date();
-      var seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate(); // YYYYMMDD
+      var seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
       var words, jumbledWords;
       var timerInterval;
-      var totalSeconds = 120; // 2 minutes in seconds
-      var score = 0; // Initialize score
+      var totalSeconds = 120;
+      var score = 0;
+
+      fetch("words.json")
+        .then((response) => response.json())
+        .then((data) => {
+          fullWordList = data.words;
+        });
 
       function seededRandom(max, min = 0) {
         seed = (seed * 9301 + 49297) % 233280;
@@ -64,9 +49,13 @@
       }
 
       function startGame() {
+        if (fullWordList.length === 0) {
+          alert("Word list is loading, please try again in a few seconds.");
+          return;
+        }
         words = fullWordList.slice();
         shuffle(words);
-        words = words.slice(0, 5); // Select the first 5 shuffled words
+        words = words.slice(0, 5);
         jumbledWords = words.map((word) => {
           var shuffled = word.split("");
           shuffle(shuffled);
@@ -86,7 +75,7 @@
           jumbledWords.splice(index, 1);
           document.getElementById("wordList").innerText = jumbledWords.join(", ");
           document.getElementById("lastWord").innerHTML = `<span class="found">${userInput}</span>`;
-          score++; // Increment score
+          score++;
           if (words.length === 0) {
             endGame();
           }
@@ -120,12 +109,6 @@
           document.getElementById("lastWord").innerHTML += `<p>Unsolved Words: ${words.join(", ")}</p>`;
         }
       }
-
-      document.getElementById("inputText").addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          hideWord();
-        }
-      });
     </script>
   </body>
 </html>
